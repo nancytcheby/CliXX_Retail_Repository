@@ -10,6 +10,7 @@ pipeline {
                 script {
                     scannerHome = tool 'sonarqube'
                 }
+		// use the withCredentials() Jenkins function to introduce the SONAR_TOKEN secret
                 withCredentials([string(credentialsId: 'SONAR_TOKEN', variable: 'SONAR_TOKEN')]){
                     withSonarQubeEnv('SonarQubeScanner') {
                         sh """ ${scannerHome}/bin/sonar-scanner \
@@ -29,7 +30,7 @@ pipeline {
     }
 }
 
-#define a function that references the tool 
+// define a function that references the tool 
 def getSonarPath(){
     def SonarHome= tool name: 'sonarqube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
     return SonarHome
