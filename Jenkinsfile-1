@@ -59,7 +59,7 @@ pipeline {
                 python3 --version
                 pip3 install boto3 botocore boto
 		ansible-galaxy collection install amazon.aws community.aws
-                ansible-playbook $WORKSPACE/deploy_db_ansible/deploy_db.yml
+		ansible-playbook -e "ansible_python_interpreter=$(which python3)" $WORKSPACE/deploy_db_ansible/deploy_db.yml
                 deactivate
                 '''
             }
@@ -94,7 +94,7 @@ pipeline {
                 python3 --version
                 pip3 install boto3 botocore boto
 		ansible-galaxy collection install amazon.aws community.aws
-                ansible-playbook $WORKSPACE/deploy_db_ansible/delete_db.yml
+		ansible-playbook -e "ansible_python_interpreter=$(which python3)" $WORKSPACE/deploy_db_ansible/deploy_db.yml
                 deactivate
                 docker stop clixx-cont
                 docker rm clixx-cont
