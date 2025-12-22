@@ -16,7 +16,6 @@
            region: us-east-1
            state: present
            wait: yes
-           wait_timeout: 1200
        - name: Modify to add SG
          amazon.aws.rds_instance:
            db_instance_identifier: '{{ instance_id }}'
