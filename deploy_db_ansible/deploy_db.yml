@@ -13,6 +13,7 @@
            db_instance_identifier: '{{ instance_id }}'
            db_snapshot_identifier: '{{ db_snapshot }}'
            db_instance_class: db.t3.small
+           engine: mysql
            region: us-east-1
            state: present
            wait: yes
