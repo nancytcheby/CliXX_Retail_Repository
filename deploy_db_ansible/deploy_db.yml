@@ -3,31 +3,28 @@
   hosts: localhost
   connection: local
   gather_facts: false
-
   vars:
     instance_id: wordpressdbclixxjenkins
     db_snapshot: wordpressdbclixx-ecs-snapshot-copy
     security_group: sg-0a72a49878da4f844
-
   tasks:
     - name: Restore DB from snapshot
-      amazon.aws.rds_instance:
-        db_instance_identifier: "{{ instance_id }}"
-        db_snapshot_identifier: "{{ db_snapshot }}"
-        db_instance_class: db.t3.small
-        engine: mysql
-        master_username: wordpressuser
-        master_user_password: "W3lcome123"
-        allocated_storage: 20       
-        region: us-east-1
-        state: present
-        wait: yes
-
-    - name: Modify to add SG
-      amazon.aws.rds_instance:
-        db_instance_identifier: "{{ instance_id }}"
-        region: us-east-1
-        vpc_security_group_ids:
-          - "{{ security_group }}"
-        state: present
-        apply_immediately: true
+      ansible.builtin.shell: |
+           aws rds restore-db-instance-from-db-snapshot \
+             --db-instance-identifier {{ instance_id }} \
+             --db-snapshot-identifier {{ db_snapshot }} \
+             --db-instance-class db.t3.small \
+             --region us-east-1
+         ignore_errors: yes
+       - name: Wait for DB to be available
+         ansible.builtin.shell: |
+           aws rds wait db-instance-available \
+             --db-instance-identifier {{ instance_id }} \
+             --region us-east-1
+       - name: Modify to add SG
+         ansible.builtin.shell: |
+           aws rds modify-db-instance \
+             --db-instance-identifier {{ instance_id }} \
+             --vpc-security-group-ids {{ security_group }} \
+             --region us-east-1 \
+             --apply-immediately
