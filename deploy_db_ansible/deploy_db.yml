@@ -16,6 +16,7 @@
         db_snapshot_identifier: "{{ db_snapshot }}"
         db_instance_class: db.t3.small
         engine: mysql
+        master_user_password: "W3lcome123"
         allocated_storage: 20       
         region: us-east-1
         state: present
