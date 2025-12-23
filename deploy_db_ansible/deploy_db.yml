@@ -6,7 +6,7 @@
 
   vars:
     instance_id: wordpressdbclixxjenkins
-    db_snapshot: wordpressdbclixx-ecs-snapshot
+    db_snapshot: wordpressdbclixx-ecs-snapshot-copy
     security_group: sg-0a72a49878da4f844
 
   tasks:
