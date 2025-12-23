@@ -1,30 +1,31 @@
 ---
-  - name: "CliXX DB Deployment Ansible Playbook"
-    hosts: localhost
-    connection: local
-    gather_facts: false
-    vars:
-      instance_id: wordpressdbclixxjenkins
-      db_snapshot: wordpressdbclixx-ecs-snapshot
-      security_group: sg-0359e3a7392989004
-    tasks:
-       - name: Restore DB from snapshot
-         amazon.aws.rds_instance:
-           db_instance_identifier: '{{ instance_id }}'
-           db_snapshot_identifier: '{{ db_snapshot }}'
-           db_instance_class: db.t3.small
-           engine: mysql
-           master_username: wordpressuser
-           master_user_password: W3lcome123
-           db_name: wordpressdb
-           region: us-east-1
-           state: present
-           wait: yes
-       - name: Modify to add SG
-         amazon.aws.rds_instance:
-           db_instance_identifier: '{{ instance_id }}'
-           region: us-east-1
-           vpc_security_group_ids:
-             - '{{ security_group }}'
-           state: present
-           apply_immediately: true
+- name: "CliXX DB Deployment Ansible Playbook"
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    instance_id: wordpressdbclixxjenkins
+    db_snapshot: wordpressdbclixx-ecs-snapshot
+    security_group: sg-0359e3a7392989004
+
+  tasks:
+    - name: Restore DB from snapshot
+      amazon.aws.rds_instance:
+        db_instance_identifier: "{{ instance_id }}"
+        db_snapshot_identifier: "{{ db_snapshot }}"
+        db_instance_class: db.t3.small
+        engine: mysql
+        allocated_storage: 20       
+        region: us-east-1
+        state: present
+        wait: yes
+
+    - name: Modify to add SG
+      amazon.aws.rds_instance:
+        db_instance_identifier: "{{ instance_id }}"
+        region: us-east-1
+        vpc_security_group_ids:
+          - "{{ security_group }}"
+        state: present
+        apply_immediately: true
