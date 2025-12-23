@@ -7,7 +7,7 @@
   vars:
     instance_id: wordpressdbclixxjenkins
     db_snapshot: wordpressdbclixx-ecs-snapshot
-    security_group: sg-0359e3a7392989004
+    security_group: sg-0a72a49878da4f844
 
   tasks:
     - name: Restore DB from snapshot
